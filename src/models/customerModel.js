@@ -1,51 +1,48 @@
 const mongoose = require('mongoose');
+const { v4: uuidv4 } = require('uuid');
 
-const { Schema, model } = mongoose;
 
-const customerSchema = new Schema({
+const customerSchema = new mongoose.Schema({
     firstName: {
         type: String,
-        required: true
+        required: true,
     },
     lastName: {
         type: String,
-        required: true
+        required: true,
     },
     mobileNumber: {
         type: String,
         required: true,
         minlength: 10,
-        maxlength: 10
+        maxlength: 10,
     },
     DOB: {
         type: Date,
-        required: true
+        required: true,
     },
     emailID: {
         type: String,
         required: true,
         unique: true,
-        validate: {
-            validator: (value) => {
-                return /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/.test(value);
-            },
-            message: 'Please enter a valid email address'
-        }
     },
     address: {
         type: String,
-        required: true
+        required: true,
     },
     customerID: {
         type: String,
         required: true,
-        unique: true
+        unique: true,
+        default  : uuidv4,
     },
     status: {
         type: String,
         enum: ['ACTIVE', 'INACTIVE'],
-        default: 'ACTIVE'
-    }
-}, { timestamps: true });
+        default: 'ACTIVE',
+    },
+},{timestamps : true})
 
-module.exports = model('Customer', customerSchema);
+
+
+module.exports = mongoose.model('Customer', customerSchema)
